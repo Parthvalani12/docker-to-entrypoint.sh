@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  web:
+    image: nginx:latest
+    container_name: nginx_container
+    ports:
+      - "8080:80"
+  # Use uppercase for consistency
+    enviroment:
+       - COPY=true
+    volumes:
+      - my_named_volume:/usr/share/nginx/html
+      - parth_data:/parth_data
+      - ./docker_clone_volume.sh:/docker_clone_volume.sh
+    entrypoint: [   "sh","-c", "./docker_clone_volume.sh && nginx -g 'daemon off;'"]
+volumes:
+  my_named_volume:
+    name: my_named_volume
+  parth_data:
+    name: parth_data
+~
