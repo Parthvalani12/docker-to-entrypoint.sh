@@ -1,0 +1,27 @@
+#!/bin/bash
+ 
+# Source - Container 3
+SOURCE_CONTAINER="odoo_container_3"
+DEST_CONTAINER="odoo_container_4"
+ 
+# Check if COPY flag is set
+if [ "$COPY" != "true" ]; then
+    echo "Skipping copy process as COPY is not set to true."
+    exit 0
+fi
+ 
+ 
+# Host Paths
+HOST_PATH="/home/erp/workspace/project_4"
+ 
+# Copy Data from Container 3 to Host Machine
+docker cp $SOURCE_CONTAINER:/mnt/extra-addons $HOST_PATH/addons
+docker cp $SOURCE_CONTAINER:/etc/odoo $HOST_PATH/conf
+docker cp $SOURCE_CONTAINER:/var/lib/odoo $HOST_PATH/filestore
+ 
+# Copy Data from Host Machine to Container 4
+docker cp $HOST_PATH/addons $DEST_CONTAINER:/mnt/extra-addons
+docker cp $HOST_PATH/conf $DEST_CONTAINER:/etc/odoo
+docker cp $HOST_PATH/filestore $DEST_CONTAINER:/var/lib/odoo
+ 
+echo " Data copied from $SOURCE_CONTAINER to $DEST_CONTAINER successfully!"
